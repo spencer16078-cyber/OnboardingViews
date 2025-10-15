@@ -28,27 +28,27 @@ struct AllergySelectionView: View {
     }
     
     var body: some View {
-        VStack(spacing: 24) {
-            // Header (unchanged)
-            VStack(spacing: 12) {
-                Image(systemName: "exclamationmark.circle")
-                    .font(.system(size: 32))
-                    .foregroundColor(.orange)
-                    .padding(12)
-                    .background(Color.orange.opacity(0.1))
-                    .clipShape(Circle())
+        ScrollView {
+            VStack(spacing: 24) {
+                // Header (unchanged)
+                VStack(spacing: 12) {
+                    Image(systemName: "exclamationmark.circle")
+                        .font(.system(size: 32))
+                        .foregroundColor(.orange)
+                        .padding(12)
+                        .background(Color.orange.opacity(0.1))
+                        .clipShape(Circle())
+                    
+                    Text("Any allergies or restrictions?")
+                        .font(.custom("Montserrat-Bold", size: 24))
+                    
+                    Text("Help us keep you safe with personalized recipes")
+                        .font(.custom("Montserrat-Medium", size: 14))
+                        .foregroundColor(.greenText)
+                        .multilineTextAlignment(.center)
+                }
+                .padding(.top, 20)
                 
-                Text("Any allergies or restrictions?")
-                    .font(.custom("Montserrat-Bold", size: 24))
-                
-                Text("Help us keep you safe with personalized recipes")
-                    .font(.custom("Montserrat-Medium", size: 14))
-                    .foregroundColor(.greenText)
-                    .multilineTextAlignment(.center)
-            }
-            .padding(.top, 20)
-            
-            ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     // Common Allergies Section (updated to use shared state)
                     VStack(alignment: .leading, spacing: 12) {
@@ -75,7 +75,7 @@ struct AllergySelectionView: View {
                             .foregroundColor(.mainText)
                         
                         HStack(spacing: 8) {
-                            TextField("e.g., Cilantro, Mushrooms...", text: $customAllergy)
+                            TextField("e.g., Cilantro, Mushrooms...", text:$customAllergy)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                             
                             Button {
@@ -122,43 +122,43 @@ struct AllergySelectionView: View {
                     }
                 }
                 .padding(.horizontal)
-            }
-            
-            Spacer()
-            
-            // Navigation Buttons (add disable if empty)
-            HStack(spacing: 12) {
-                Button {
-                    dismissScreen()
-                } label: {
-                    Text("Back")
-                        .font(.custom("Montserrat-Medium", size: 16))
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.buttonFill)
-                        .foregroundColor(.greenText)
-                        .cornerRadius(12)
-                }
                 
-                NavigationLink {
-                    CookingPreferencesView()
-                } label: {
-                    Text("Continue")
-                        .font(.custom("Montserrat-Semibold", size: 16))
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(LinearGradient(colors: [.secondaryAccent, .accent], startPoint: .leading, endPoint: .trailing))
-                        .foregroundColor(.white)
-                        .cornerRadius(12)
+                Spacer()
+                
+                // Navigation Buttons (add disable if empty)
+                HStack(spacing: 12) {
+                    Button {
+                        dismissScreen()
+                    } label: {
+                        Text("Back")
+                            .font(.custom("Montserrat-Medium", size: 16))
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.buttonFill)
+                            .foregroundColor(.greenText)
+                            .cornerRadius(12)
+                    }
+                    
+                    NavigationLink {
+                        CookingPreferencesView()
+                    } label: {
+                        Text("Continue")
+                            .font(.custom("Montserrat-Semibold", size: 16))
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(LinearGradient(colors: [.secondaryAccent, .accent], startPoint: .leading, endPoint: .trailing))
+                            .foregroundColor(.white)
+                            .cornerRadius(12)
+                    }
                 }
+                .padding(.horizontal)
+                .padding(.bottom, 20)
             }
-            .padding(.horizontal)
-            .padding(.bottom, 20)
+            .onAppear {
+                print("AllergySelectionView loaded: Current selectedAllergies = \(preferences.selectedAllergies)")  // Debug
+            }
         }
         .background(Color(.primaryBackground))
-        .onAppear {
-            print("AllergySelectionView loaded: Current selectedAllergies = \(preferences.selectedAllergies)")  // Debug
-        }
     }
 
     private func toggleAllergy(_ name: String) {
